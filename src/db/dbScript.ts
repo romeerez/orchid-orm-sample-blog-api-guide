@@ -1,9 +1,14 @@
 import { rakeDb } from "rake-db";
 import { appCodeUpdater } from "orchid-orm/codegen";
-import { config } from "./config";
 import { BaseTable } from "./baseTable";
+import { config } from "../config";
 
-export const change = rakeDb(config.allDatabases, {
+const databases = [{ databaseURL: config.env.DATABASE_URL }];
+
+const testDatabase = config.env.DATABASE_URL_TEST;
+if (testDatabase) databases.push({ databaseURL: testDatabase });
+
+export const change = rakeDb(databases, {
   baseTable: BaseTable,
   migrationsPath: "./migrations",
   appCodeUpdater: appCodeUpdater({
