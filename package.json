@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "test": "vitest",
     "start:prod": "NODE_ENV=production node dist/server.js",
     "db": "tsx src/db/dbScript.ts",
     "db:compiled": "NODE_ENV=production node dist/db/dbScript.mjs",
@@ -44,6 +45,7 @@
     "rake-db": "^2.10.68",
     "rimraf": "^5.0.5",
     "tsx": "^4.1.4",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }
