@@ -15,7 +15,7 @@ const env = z
       ])
       .default("development"),
     DATABASE_URL: z.string(),
-    DATABASE_URL_TEST: z.string().optional(),
+    DATABASE_TEST_URL: z.string().optional(),
     JWT_SECRET: z.string(),
   })
   .parse(process.env);
@@ -37,6 +37,6 @@ const logger = {
 export const config = {
   env,
   currentDatabaseUrl:
-    env.NODE_ENV === "test" ? env.DATABASE_URL_TEST : env.DATABASE_URL,
+    env.NODE_ENV === "test" ? env.DATABASE_TEST_URL : env.DATABASE_URL,
   logger,
 };

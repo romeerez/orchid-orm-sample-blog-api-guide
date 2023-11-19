@@ -1,4 +1,4 @@
-import { testRequest } from "../../lib/testRequest";
+import { testRequest } from "../../lib/test/testRequest";
 
 describe("GET /", () => {
   it('should return "hello world"', async () => {

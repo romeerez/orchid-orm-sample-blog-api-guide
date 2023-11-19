@@ -10,7 +10,7 @@ export function helloRouter(app: FastifyApp) {
         }),
       },
     },
-    handler: () => {
+    handler() {
       return {
         message: "hello world",
       };

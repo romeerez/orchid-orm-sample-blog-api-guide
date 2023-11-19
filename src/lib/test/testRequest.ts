@@ -1,4 +1,4 @@
-import { app } from "../app";
+import { app } from "../../app";
 import { InjectOptions } from "fastify";
 
 const req = app.inject.bind(app);
@@ -20,6 +20,7 @@ const requestWithPayload = (method: InjectOptions["method"]) => {
         ...params,
       },
     );
+
     return chain.end();
   };
 };

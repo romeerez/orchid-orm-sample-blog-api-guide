@@ -5,7 +5,7 @@ import { config } from "../config";
 
 const databases = [{ databaseURL: config.env.DATABASE_URL }];
 
-const testDatabase = config.env.DATABASE_URL_TEST;
+const testDatabase = config.env.DATABASE_TEST_URL;
 if (testDatabase) databases.push({ databaseURL: testDatabase });
 
 export const change = rakeDb(databases, {
@@ -16,6 +16,6 @@ export const change = rakeDb(databases, {
     ormPath: "./db.ts",
   }),
   // set to false to disable code updater
-  useCodeUpdater: process.env.NODE_ENV === "development",
+  useCodeUpdater: config.env.NODE_ENV === "development",
   import: (path) => import(path),
 });
