@@ -1,4 +1,5 @@
 import { BaseTable } from "../../db/baseTable";
+import { UserFollowTable } from "./userFollow.table";
 
 export class UserTable extends BaseTable {
   readonly table = "user";
@@ -9,4 +10,16 @@ export class UserTable extends BaseTable {
     password: t.string().min(8),
     ...t.timestamps(),
   }));
+
+  relations = {
+    follows: this.hasMany(() => UserFollowTable, {
+      columns: ["id"],
+      references: ["followingId"],
+    }),
+
+    followings: this.hasMany(() => UserFollowTable, {
+      columns: ["id"],
+      references: ["followerId"],
+    }),
+  };
 }

@@ -2,9 +2,15 @@ import { db } from "../../db/db";
 import { comparePassword, encryptPassword } from "../../lib/password";
 import { createToken } from "../../lib/jwt";
 import { ApiError } from "../../lib/errors";
-import { userRegisterDTO, authDTO, userLoginDTO } from "./user.dto";
+import {
+  userRegisterDTO,
+  authDTO,
+  userLoginDTO,
+  usernameDTO,
+} from "./user.dto";
 import { FastifyApp } from "../../app";
 import { omit } from "../../lib/utils";
+import { getCurrentUserId } from "./user.service";
 
 export function userRouter(app: FastifyApp) {
   app.post("/users", {
@@ -62,6 +68,43 @@ export function userRouter(app: FastifyApp) {
         user: omit(user, "password"),
         token: createToken({ id: user.id }),
       };
+    },
+  });
+
+  app.post("/users/:username/follow", {
+    schema: {
+      params: usernameDTO,
+    },
+    async handler(req) {
+      const userId = getCurrentUserId(req);
+
+      await db.user
+        .findBy({
+          username: req.params.username,
+        })
+        .follows.create({
+          followerId: userId,
+        });
+    },
+  });
+
+  app.delete("/users/:username/follow", {
+    schema: {
+      params: usernameDTO,
+    },
+    async handler(req) {
+      const userId = getCurrentUserId(req);
+
+      const user = await db.user.findBy({
+        username: req.params.username,
+      });
+
+      await db.user
+        .follows(user)
+        .where({
+          followerId: userId,
+        })
+        .delete();
     },
   });
 }
