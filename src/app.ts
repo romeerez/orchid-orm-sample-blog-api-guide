@@ -8,6 +8,7 @@ import { config } from "./config";
 import { errorHandler } from "./lib/errorHandler";
 import { helloRouter } from "./modules/hello/hello.router";
 import { userRouter } from "./modules/user/user.router";
+import { articleRouter } from "./modules/article/article.router";
 
 export const app = fastify({
   logger: config.logger,
@@ -20,5 +21,6 @@ app.setSerializerCompiler(serializerCompiler);
 
 helloRouter(app);
 userRouter(app);
+articleRouter(app);
 
 app.setErrorHandler(errorHandler);

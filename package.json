@@ -28,9 +28,9 @@
     "fastify": "^4.24.3",
     "fastify-type-provider-zod": "^1.1.9",
     "jsonwebtoken": "^9.0.2",
-    "orchid-orm": "^1.17.32",
-    "orchid-orm-schema-to-zod": "^0.4.34",
-    "pqb": "^0.18.31",
+    "orchid-orm": "^1.17.36",
+    "orchid-orm-schema-to-zod": "^0.4.36",
+    "pqb": "^0.18.33",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -43,13 +43,13 @@
     "husky": "^8.0.3",
     "light-my-request": "^5.11.0",
     "lint-staged": "^15.1.0",
-    "orchid-orm-test-factory": "^0.3.160",
+    "orchid-orm-test-factory": "^0.3.164",
     "pino-pretty": "^10.2.3",
     "prettier": "^3.1.0",
-    "rake-db": "^2.10.68",
+    "rake-db": "^2.10.70",
     "rimraf": "^5.0.5",
     "tsx": "^4.1.4",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "vitest": "^0.34.6"
   }
 }
