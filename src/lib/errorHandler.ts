@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { NotFoundError } from "pqb";
+import { NotFoundError } from "orchid-orm";
 import { ApiError } from "./errors";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 
