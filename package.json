@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "test": "vitest",
+    "types": "tsc --noEmit",
     "start:prod": "NODE_ENV=production node dist/server.js",
     "db": "tsx src/db/dbScript.ts",
     "db:compiled": "NODE_ENV=production node dist/db/dbScript.mjs",
@@ -28,11 +29,13 @@
     "fastify": "^4.24.3",
     "fastify-type-provider-zod": "^1.1.9",
     "jsonwebtoken": "^9.0.2",
-    "orchid-orm": "^1.17.38",
-    "orchid-orm-schema-to-zod": "^0.4.38",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "orchid-orm": "^1.20.0",
+    "orchid-orm-schema-to-zod": "^0.5.0"
   },
   "devDependencies": {
+    "orchid-orm-test-factory": "^0.4.0",
+    "rake-db": "^2.12.0",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.9.2",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
@@ -42,10 +45,8 @@
     "husky": "^8.0.3",
     "light-my-request": "^5.11.0",
     "lint-staged": "^15.1.0",
-    "orchid-orm-test-factory": "^0.3.166",
     "pino-pretty": "^10.2.3",
     "prettier": "^3.1.0",
-    "rake-db": "^2.10.72",
     "rimraf": "^5.0.5",
     "tsx": "^4.1.4",
     "typescript": "^5.3.2",

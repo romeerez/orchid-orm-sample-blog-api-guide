@@ -3,9 +3,9 @@ import { z } from "zod";
 import { TagTable } from "../tag/tag.table";
 import { ArticleTable } from "./article.table";
 
-const tagListDTO = TagTable.schema().shape.name.array();
+const tagListDTO = TagTable.outputSchema().shape.name.array();
 
-export const articleDTO = ArticleTable.schema()
+export const articleDTO = ArticleTable.outputSchema()
   .pick({
     slug: true,
     title: true,
@@ -22,7 +22,7 @@ export const articleDTO = ArticleTable.schema()
     }),
   );
 
-export const articleCreateDTO = ArticleTable.schema()
+export const articleCreateDTO = ArticleTable.inputSchema()
   .pick({
     slug: true,
     title: true,
@@ -38,4 +38,4 @@ export const articleUpdateDTO = articleCreateDTO
   })
   .partial();
 
-export const articleSlugDTO = ArticleTable.schema().pick({ slug: true });
+export const articleSlugDTO = ArticleTable.inputSchema().pick({ slug: true });

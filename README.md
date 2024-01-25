@@ -83,18 +83,21 @@ There are 3 ways to handle timestamps: as strings (ISO format), as numbers (epoc
 `Date` object seems like an obvious choice, but remember that it would involve additional serializing and deserializing to JSON,
 adds some difficulties to tests when asserting results, may lead to time-zone related bugs.
 
-`schemaProvider: zodSchemaProvider` enables using a `Zod` schema that's automatically defined for each table.
-Access the schema with `MyTable.schema()`.
+`schemaConfig: zodSchemaConfig` enables using a `Zod` schema that's automatically defined for each table.
+
+Access the schema with `MyTable.inputSchema()` for validating incoming data, use `MyTable.outputSchema()` for validating data loaded from a database.
 
 ```ts
 // src/db/baseTable
 
 import { createBaseTable } from "orchid-orm";
-import { zodSchemaProvider } from "orchid-orm-schema-to-zod";
+import { zodSchemaConfig } from "orchid-orm-schema-to-zod";
 
 export const BaseTable = createBaseTable({
   // Set `snakeCase` to `true` if columns in your database are in snake_case.
   // snakeCase: true,
+
+  schemaConfig: zodSchemaConfig,
 
   // Customize column types for all tables.
   columnTypes: (t) => ({
@@ -103,10 +106,8 @@ export const BaseTable = createBaseTable({
     // it is only checked when validating with Zod schemas derived from the table.
     text: (min = 0, max = Infinity) => t.text(min, max),
     // Parse timestamps to number.
-    timestamp: <P extends number>(precision?: P) =>
-      t.timestamp<P>(precision).asNumber(),
+    timestamp: (precision?: number) => t.timestamp(precision).asNumber(),
   }),
-  schemaProvider: zodSchemaProvider,
 });
 ```
 
@@ -302,7 +303,7 @@ Consider the `email` column:
 ```ts
 t.string() // this is a column type
   .unique() // mark the column as `unique`, this is used by migration and by test factory
-  .email(); // validates email when using `UserTable.schema()`
+  .email(); // validates email when using `UserTable.inputSchema()`
 ```
 
 Now that we have table class, and it is registered in [db.ts](./src/db/db.ts), we can write queries like `db.user.count()`, `db.user.select(...)`, and many others.
@@ -483,21 +484,21 @@ import { z } from "zod";
 import { UserTable } from "./user.table";
 
 // input data to register user
-export const userRegisterDTO = UserTable.schema().pick({
+export const userRegisterDTO = UserTable.inputSchema().pick({
   username: true,
   email: true,
   password: true,
 });
 
 // input data to login
-export const userLoginDTO = UserTable.schema().pick({
+export const userLoginDTO = UserTable.inputSchema().pick({
   email: true,
   password: true,
 });
 
 // response data of register and login endpoints
 export const authDTO = z.object({
-  user: UserTable.schema().pick({
+  user: UserTable.outputSchema().pick({
     id: true,
     username: true,
     email: true,
@@ -506,12 +507,12 @@ export const authDTO = z.object({
 });
 
 // parameters to follow a user by username
-export const usernameDTO = UserTable.schema().pick({
+export const usernameDTO = UserTable.inputSchema().pick({
   username: true,
 });
 
 // will be used later in `articleDTO` for the article author object
-export const userDTO = UserTable.schema()
+export const userDTO = UserTable.outputSchema()
   .pick({
     username: true,
   })
@@ -1464,9 +1465,9 @@ import { z } from "zod";
 import { TagTable } from "../tag/tag.table";
 import { ArticleTable } from "./article.table";
 
-const tagListDTO = TagTable.schema().shape.name.array();
+const tagListDTO = TagTable.outputSchema().shape.name.array();
 
-export const articleDTO = ArticleTable.schema()
+export const articleDTO = ArticleTable.outputSchema()
   .pick({
     slug: true,
     title: true,
@@ -1897,7 +1898,7 @@ Implementation of the router:
 ```ts
 // src/modules/article/article.dto.ts
 
-export const articleCreateDTO = ArticleTable.schema()
+export const articleCreateDTO = ArticleTable.inputSchema()
   .pick({
     slug: true,
     title: true,
@@ -2063,7 +2064,7 @@ export const articleUpdateDTO = articleCreateDTO
   })
   .partial();
 
-export const articleSlugDTO = ArticleTable.schema().pick({ slug: true });
+export const articleSlugDTO = ArticleTable.inputSchema().pick({ slug: true });
 ```
 
 ```ts
